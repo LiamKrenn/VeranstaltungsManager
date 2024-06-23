@@ -1,7 +1,25 @@
-<div class="flex h-full w-full">
+<script lang="ts">
+	import EventCard from '$lib/components/EventCard.svelte';
+	import type { EventType } from '$lib/types';
+	import { onMount } from 'svelte';
+
+	let events: EventType[] = [];
+	onMount(async () => {
+		events = await (await fetch('/api')).json();
+		//  fetch('/api', {
+		//     method: 'POST',
+		//     headers: {
+		//       'Content-Type': 'application/json',
+		//     },
+		//     body: JSON.stringify(event_o),
+		//   });
+	});
+</script>
+
+<div class="flex h-full w-full ">
 	<div class="flex w-[30%] flex-col justify-between border-r-2 border-r-slate-700 p-2 pr-4 text-lg">
 		<div>
-			<h1 class="text-4xl font-bold mb-4">All Events In One Place</h1>
+			<h1 class="mb-4 text-4xl font-bold">All Events In One Place</h1>
 			<p class="mb-4">Herzlich willkommen auf unserer Veranstaltungsplattform!</p>
 			<p>
 				Hier finden Sie eine Übersicht über alle kommenden Events. Entdecken Sie interessante
@@ -22,7 +40,9 @@
 			<img class="w-full" src="/ver.png" alt="ver" />
 		</div>
 	</div>
-  <div class="w-full h-full">
-    <!-- Veranstaltungen -->
-  </div>
+	<div class="h-min w-full flex flex-wrap  justify-center">
+		{#each events as event}
+			<EventCard {event} />
+		{/each}
+	</div>
 </div>
